@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.mhuang.pacebox</groupId>
     <artifactId>pacebox-elasticsearch</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>elasticsearch tool</name>
     <url>https://gitee.com/pacebox/pacebox-elasticsearch.git</url>
     <description>elasticsearch plugin</description>
@@ -13,11 +13,12 @@
         <java.version>1.8</java.version>
         <lombok.version>1.18.24</lombok.version>
         <fastjson.version>2.0.12</fastjson.version>
-        <resthigh.client.version>7.17.6</resthigh.client.version>
+        <es.client.version>7.17.6</es.client.version>
         <jackson.version>2.13.3</jackson.version>
         <log4j-to-slf4j.version>2.18.0</log4j-to-slf4j.version>
         <slf4j.version>2.0.0</slf4j.version>
         <pacebox.core.version>1.1.6</pacebox.core.version>
+        <jakarta.json.version>2.1.1</jakarta.json.version>
     </properties>
     <dependencies>
         <dependency>
@@ -28,7 +29,13 @@
         <dependency>
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
-            <version>${resthigh.client.version}</version>
+            <version>${es.client.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jakarta.json-api</artifactId>
+                    <groupId>jakarta.json</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -49,11 +56,22 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-to-slf4j</artifactId>
             <version>${log4j-to-slf4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>slf4j-api</artifactId>
             <groupId>org.slf4j</groupId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.json</groupId>
+            <artifactId>jakarta.json-api</artifactId>
+            <version>${jakarta.json.version}</version>
         </dependency>
     </dependencies>
     <licenses>
