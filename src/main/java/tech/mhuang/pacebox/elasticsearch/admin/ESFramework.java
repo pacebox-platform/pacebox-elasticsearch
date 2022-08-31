@@ -1,12 +1,15 @@
 package tech.mhuang.pacebox.elasticsearch.admin;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
-import org.elasticsearch.client.RestHighLevelClient;
 import tech.mhuang.pacebox.elasticsearch.admin.bean.ESInfo;
 import tech.mhuang.pacebox.elasticsearch.admin.external.IESExternal;
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
@@ -67,7 +70,7 @@ public class ESFramework {
         info.getBeanMap().forEach((key, bean) -> {
             //配置开启才加载
             if (bean.isEnable()) {
-                RestHighLevelClient client = loadProperties(bean);
+                ElasticsearchClient client = loadProperties(bean);
                 IESFactory esFactory = external.create(key);
                 esFactory.setClient(client);
                 esFactory.setName(key);
@@ -81,11 +84,11 @@ public class ESFramework {
     /**
      * 装载配置
      */
-    private RestHighLevelClient loadProperties(ESInfo.ESBean bean) {
-        HttpHost httpHost = new HttpHost(bean.getIp(), bean.getPort(), bean.getScheme());
-        RestClientBuilder builder = RestClient.builder(httpHost);
-        setterClientConfig(builder, bean);
-        return new RestHighLevelClient(builder);
+    private ElasticsearchClient loadProperties(ESInfo.ESBean bean) {
+        RestClientBuilder restClient = RestClient.builder(new HttpHost(bean.getIp(), bean.getPort()));
+        setterClientConfig(restClient, bean);
+        ElasticsearchTransport transport = new RestClientTransport(restClient.build(), new JacksonJsonpMapper());
+        return new ElasticsearchClient(transport);
     }
 
     /**

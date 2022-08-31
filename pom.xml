@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.mhuang.pacebox</groupId>
     <artifactId>pacebox-elasticsearch</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>elasticsearch tool</name>
     <url>https://gitee.com/pacebox/pacebox-elasticsearch.git</url>
     <description>elasticsearch plugin</description>
@@ -11,12 +11,13 @@
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <lombok.version>1.18.16</lombok.version>
-        <fastjson.version>1.2.75</fastjson.version>
-        <resthigh.client.version>7.10.2</resthigh.client.version>
-        <log4j-to-slf4j.version>2.14.0</log4j-to-slf4j.version>
-        <slf4j.version>1.7.30</slf4j.version>
-        <pacebox.core.version>1.0.10</pacebox.core.version>
+        <lombok.version>1.18.24</lombok.version>
+        <fastjson.version>2.0.12</fastjson.version>
+        <resthigh.client.version>7.17.6</resthigh.client.version>
+        <jackson.version>2.13.3</jackson.version>
+        <log4j-to-slf4j.version>2.18.0</log4j-to-slf4j.version>
+        <slf4j.version>2.0.0</slf4j.version>
+        <pacebox.core.version>1.1.6</pacebox.core.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,19 +26,14 @@
             <version>${pacebox.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
             <version>${resthigh.client.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>${resthigh.client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>${resthigh.client.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -45,8 +41,8 @@
             <version>${lombok.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
         <dependency>
@@ -148,7 +144,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>oss</id>
@@ -162,7 +158,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
+                        <version>1.6.13</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>oss</serverId>

@@ -1,6 +1,6 @@
 package tech.mhuang.pacebox.elasticsearch.server.query;
 
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 /**
  * 扩展查询类
@@ -10,14 +10,14 @@ import org.elasticsearch.client.RestHighLevelClient;
  */
 public abstract class AbstractESQuery {
 
-    protected RestHighLevelClient client;
+    protected ElasticsearchClient client;
 
     /**
      * 包装RestHighLevelClient
      *
      * @param client
      */
-    public AbstractESQuery(RestHighLevelClient client) {
+    public AbstractESQuery(ElasticsearchClient client) {
         this.client = client;
     }
 

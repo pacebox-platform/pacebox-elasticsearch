@@ -1,19 +1,15 @@
 package tech.mhuang.pacebox.elasticsearch.server.query;
 
-import com.alibaba.fastjson.JSON;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchScrollRequest;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import tech.mhuang.pacebox.elasticsearch.model.query.ESPage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class DefaultESQuery extends AbstractESQuery {
 
-    public DefaultESQuery(RestHighLevelClient client) {
+    public DefaultESQuery(ElasticsearchClient client) {
         super(client);
     }
 
@@ -38,86 +34,25 @@ public class DefaultESQuery extends AbstractESQuery {
 
         private QueryContext queryContext = null;
 
-        private RestHighLevelClient client = null;
+        private ElasticsearchClient client = null;
 
-        private SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-        private SearchRequest searchRequest = new SearchRequest();
-
-        private SearchScrollRequest searchScrollRequest = new SearchScrollRequest();
-
-        DefaultEsQueryResult(QueryContext queryContext, RestHighLevelClient client) {
+        DefaultEsQueryResult(QueryContext queryContext, ElasticsearchClient client) {
             this.queryContext = queryContext;
             this.client = client;
         }
 
         @Override
         public <T> List<T> list(Class<T> clz) {
-            SearchResponse response = null;
-            try {
-                List<T> results = new ArrayList<>();
-                this.analizeNotScollContext(this.searchRequest, this.searchSourceBuilder, this.queryContext);
-                if (queryContext.getSize() == null) {
-                    searchSourceBuilder.size(10000);
-                    log.warn("No size is set, the system defaults to  maximum 10000");
-                }
-                searchRequest.source(searchSourceBuilder);
-                response = client.search(searchRequest, RequestOptions.DEFAULT);
-                SearchHits hits = response.getHits();
-                if (hits != null && hits.getHits() != null && hits.getHits().length > 0) {
-                    for (SearchHit searchHit : response.getHits()) {
-                        T obj = JSON.parseObject(searchHit.getSourceAsString(), clz);
-                        results.add(obj);
-                    }
-                }
-                return results;
-            } catch (Exception e) {
-                throw new ElasticsearchException(e);
-            } finally {
-            }
+            return Collections.EMPTY_LIST;
         }
 
         @Override
         public <T> ESPage<T> page(Class<T> clz) {
-            ESPage<T> esPage = new ESPage<>();
-            SearchResponse response = null;
-            try {
-                String scrollId = null;
-                SearchHits hits = null;
-                if (queryContext.getScrollId() == null) {
-                    this.analizeNotScollContext(this.searchRequest, this.searchSourceBuilder, this.queryContext);
-                    searchRequest.source(searchSourceBuilder);
-                    this.analizeFirstScollContext(this.searchRequest, this.queryContext);
-                    response = client.search(searchRequest, RequestOptions.DEFAULT);
-                    scrollId = response.getScrollId();
-                    hits = response.getHits();
-                } else {
-                    this.analizeScollContext(this.searchScrollRequest, this.queryContext);
-                    SearchScrollRequest scrollRequest = new SearchScrollRequest(queryContext.getScrollId());
-                    SearchResponse searchScrollResponse = client.scroll(scrollRequest, RequestOptions.DEFAULT);
-                    scrollId = searchScrollResponse.getScrollId();
-                    hits = searchScrollResponse.getHits();
-                }
-                long totalHits = hits.getTotalHits().value;
-                esPage.setTotal(totalHits);
-                List<T> results = new ArrayList<>();
-                if (hits != null && hits.getHits() != null && hits.getHits().length > 0) {
-                    for (SearchHit searchHit : hits) {
-                        T obj = JSON.parseObject(searchHit.getSourceAsString(), clz);
-                        results.add(obj);
-                    }
-                }
-                esPage.setScrollId(scrollId);
-                esPage.setRows(results);
-                return esPage;
-            } catch (Exception e) {
-                throw new ElasticsearchException(e);
-            } finally {
-            }
+            return new ESPage<>();
         }
 
         @Override
-        public <T> T single(Class<T> clz) {
+        public <T> T get(Class<T> clz) {
             this.queryContext.size(1);
             List<T> results = this.list(clz);
             return results.size() == 0 ? null : results.get(0);

@@ -13,6 +13,6 @@ public interface ESQueryAware {
 
     <T> ESPage<T> page(Class<T> clz);
 
-    <T> T single(Class<T> clz);
+    <T> T get(Class<T> clz);
 
 }

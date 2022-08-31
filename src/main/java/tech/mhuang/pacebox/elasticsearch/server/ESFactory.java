@@ -1,25 +1,20 @@
 package tech.mhuang.pacebox.elasticsearch.server;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.master.AcknowledgedResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.PutMappingRequest;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.AcknowledgedResponse;
+import co.elastic.clients.elasticsearch.core.DeleteRequest;
+import co.elastic.clients.elasticsearch.core.DeleteResponse;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.elasticsearch.core.UpdateRequest;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.mhuang.pacebox.core.check.CheckAssert;
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
-import tech.mhuang.pacebox.elasticsearch.model.index.IndexProperties;
 import tech.mhuang.pacebox.elasticsearch.server.annoation.ESTable;
 import tech.mhuang.pacebox.elasticsearch.server.query.AbstractESQuery;
 import tech.mhuang.pacebox.elasticsearch.server.query.DefaultESQuery;
@@ -27,7 +22,6 @@ import tech.mhuang.pacebox.elasticsearch.server.query.ESSearchBuilder;
 
 import java.io.IOException;
 
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 /**
  * es工厂实现类
@@ -39,7 +33,7 @@ public class ESFactory implements IESFactory {
 
     private String name;
 
-    private RestHighLevelClient client;
+    private ElasticsearchClient client;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -49,7 +43,7 @@ public class ESFactory implements IESFactory {
     }
 
     @Override
-    public void setClient(RestHighLevelClient client) {
+    public void setClient(ElasticsearchClient client) {
         this.client = client;
     }
 
@@ -93,9 +87,9 @@ public class ESFactory implements IESFactory {
     private IndexResponse baseInsert(String data, String index) throws IOException {
         logger.debug("===正在插入ES数据=====");
         logger.debug("放入得ES数据为{}", data);
-        JSONObject jsonObject = JSONObject.parseObject(data);
-        IndexRequest indexRequest = new IndexRequest(index).source(jsonObject);
-        IndexResponse response = client.index(indexRequest, RequestOptions.DEFAULT);
+        JSONObject jsonObject = JSON.parseObject(data);
+        IndexRequest indexRequest = IndexRequest.of(i -> i.index(index).document(jsonObject));
+        IndexResponse response = client.index(indexRequest);
         logger.debug("===放入ES数据完毕=====,response:{}", response);
         return response;
     }
@@ -129,8 +123,8 @@ public class ESFactory implements IESFactory {
     @Override
     public AcknowledgedResponse delete(String index) throws IOException {
         logger.debug("===正在删除ES数据=====,index:{}", index);
-        DeleteIndexRequest deleteRequest = new DeleteIndexRequest(index);
-        AcknowledgedResponse response = client.indices().delete(deleteRequest, RequestOptions.DEFAULT);
+        DeleteIndexRequest deleteRequest = DeleteIndexRequest.of(d -> d.index(index));
+        AcknowledgedResponse response = client.indices().delete(deleteRequest);
         logger.debug("===删除ES数据完毕=====,response:{}", response);
         return response;
     }
@@ -138,8 +132,8 @@ public class ESFactory implements IESFactory {
     @Override
     public DeleteResponse delete(String index, String id) throws IOException {
         logger.debug("===正在删除ES数据=====,index:{},id:{}", index, id);
-        DeleteRequest deleteRequest = new DeleteRequest(index, id);
-        DeleteResponse response = client.delete(deleteRequest, RequestOptions.DEFAULT);
+        DeleteRequest deleteRequest = DeleteRequest.of(d -> d.index(index).id(id));
+        DeleteResponse response = client.delete(deleteRequest);
         logger.debug("===删除ES数据完毕=====,response:{}", response);
         return response;
     }
@@ -152,55 +146,17 @@ public class ESFactory implements IESFactory {
     private UpdateResponse baseUpdate(String data, String index, String id) throws IOException {
         logger.debug("===正在修改ES数据=====");
         logger.debug("修改ES数据为{}，id为:{}", data, id);
-        JSONObject jsonObject = JSONObject.parseObject(data);
-        UpdateRequest updateRequest = new UpdateRequest(index, id)
-                .doc(jsonBuilder().map(jsonObject));
-        UpdateResponse response = getClient().update(updateRequest, RequestOptions.DEFAULT);
+        JSONObject jsonObject = JSON.parseObject(data);
+
+        UpdateRequest updateRequest = UpdateRequest.of(u -> u.index(index).id(id).doc(jsonObject));
+        UpdateResponse response = client.update(updateRequest, JSONObject.class);
         logger.debug("打印应答的数据是:{}", response);
         return response;
 
     }
 
     @Override
-    public RestHighLevelClient getClient() {
+    public ElasticsearchClient getClient() {
         return client;
-    }
-
-    /**
-     * 更新索引属性
-     */
-    @Override
-    public AcknowledgedResponse updateIndexProperties(String index, IndexProperties properties) throws Exception {
-        PutMappingRequest request = new PutMappingRequest(index);
-        XContentBuilder builder = XContentFactory.jsonBuilder();
-        builder.startObject();
-        {
-            builder.startObject("properties");
-            {
-                properties.getProperties().forEach((k, v) -> {
-                    try {
-                        builder.startObject(k);
-                        {
-                            v.getParameters().forEach((ik, iv) -> {
-                                try {
-                                    builder.field(ik, iv);
-                                } catch (IOException e) {
-                                    logger.error(e.getMessage(), e);
-                                }
-                            });
-                        }
-                        builder.endObject();
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    }
-                });
-            }
-            builder.endObject();
-        }
-        builder.endObject();
-        request.source(builder);
-        AcknowledgedResponse response = this.getClient().indices().putMapping(request, RequestOptions.DEFAULT);
-        logger.debug("打印应答的数据是:{}", response);
-        return response;
     }
 }

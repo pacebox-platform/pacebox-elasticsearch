@@ -1,10 +1,10 @@
 package tech.mhuang.pacebox.elasticsearch.admin.factory;
 
-import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.master.AcknowledgedResponse;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.AcknowledgedResponse;
+import co.elastic.clients.elasticsearch.core.DeleteResponse;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import tech.mhuang.pacebox.elasticsearch.model.index.IndexProperties;
 import tech.mhuang.pacebox.elasticsearch.server.query.AbstractESQuery;
 import tech.mhuang.pacebox.elasticsearch.server.query.ESSearchBuilder;
@@ -21,7 +21,7 @@ public interface IESFactory {
 
     void setName(String name);
 
-    void setClient(RestHighLevelClient client);
+    void setClient(ElasticsearchClient client);
 
     /**
      * 获取构造器
@@ -121,14 +121,6 @@ public interface IESFactory {
      *
      * @return TransportClient 返回链接对象
      */
-    RestHighLevelClient getClient();
+    ElasticsearchClient getClient();
 
-    /**
-     * 更新索引属性
-     *
-     * @param index      更新的索引
-     * @param properties 更新的属性
-     * @throws Exception 更新异常
-     */
-    AcknowledgedResponse updateIndexProperties(String index, IndexProperties properties) throws Exception;
 }
