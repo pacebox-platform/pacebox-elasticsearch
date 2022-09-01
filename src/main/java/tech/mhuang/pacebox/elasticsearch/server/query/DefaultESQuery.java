@@ -1,14 +1,9 @@
 package tech.mhuang.pacebox.elasticsearch.server.query;
 
-import co.elastic.clients.elasticsearch._types.ElasticsearchException;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import com.alibaba.fastjson2.JSON;
-import lombok.extern.slf4j.Slf4j;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import lombok.extern.slf4j.Slf4j;
 import tech.mhuang.pacebox.elasticsearch.model.query.ESPage;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
