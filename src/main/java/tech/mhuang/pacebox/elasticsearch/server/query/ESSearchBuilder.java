@@ -85,7 +85,7 @@ public class ESSearchBuilder {
     }
 
     /**
-     * 分页查询的srollerId
+     * 分页查询的scrollId
      *
      * @param scrollId 分页的scrollId
      * @return
