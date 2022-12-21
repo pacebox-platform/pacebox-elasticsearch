@@ -9,9 +9,9 @@ public class FormatParameter {
     /**
      * 可选值
      */
-    public static enum Values {
+    public enum Values {
         DATE("yyyy-MM-dd"), DATE_TIME("yyyy-MM-dd HH:mm:ss");
-        private String value;
+        private final String value;
 
         Values(String value) {
             this.value = value;

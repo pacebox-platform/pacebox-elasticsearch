@@ -37,12 +37,12 @@ public class QueryContext {
 
     private String[] excludeFields;
 
-    private List<ESOrder> orders = new ArrayList<>(0);
+    private final List<ESOrder> orders = new ArrayList<>(0);
 
     /**
      * 查询语法存储
      */
-    List<OperatorContext> contexts = new ArrayList<>(0);
+    final List<OperatorContext> contexts = new ArrayList<>(0);
 
     void addContext(OperatorContext context) {
         contexts.add(context);

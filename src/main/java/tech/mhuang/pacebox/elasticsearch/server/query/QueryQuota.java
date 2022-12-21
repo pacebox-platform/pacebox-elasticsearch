@@ -28,7 +28,7 @@ public enum QueryQuota {
      */
     CONDITION("");
 
-    private String message;
+    private final String message;
 
     QueryQuota(String message) {
         this.message = message;

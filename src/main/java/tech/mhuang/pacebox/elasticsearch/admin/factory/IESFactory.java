@@ -5,7 +5,6 @@ import co.elastic.clients.elasticsearch._types.AcknowledgedResponse;
 import co.elastic.clients.elasticsearch.core.DeleteResponse;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
-import tech.mhuang.pacebox.elasticsearch.model.index.IndexProperties;
 import tech.mhuang.pacebox.elasticsearch.server.query.AbstractESQuery;
 import tech.mhuang.pacebox.elasticsearch.server.query.ESSearchBuilder;
 

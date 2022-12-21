@@ -22,7 +22,7 @@ public class ESBuilder {
 
     public static class ProducerBuilder implements BaseBuilder<ESInfo.ESBean> {
 
-        private ESInfo.ESBean info;
+        private final ESInfo.ESBean info;
 
         public ProducerBuilder() {
             this.info = new ESInfo.ESBean();
@@ -135,7 +135,7 @@ public class ESBuilder {
 
     public static class Builder implements BaseBuilder<ESFramework> {
 
-        private ESInfo info;
+        private final ESInfo info;
 
         Builder() {
             this.info = new ESInfo();

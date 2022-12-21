@@ -35,7 +35,7 @@ public class ESFactory implements IESFactory {
 
     private ElasticsearchClient client;
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void setName(String name) {
@@ -99,6 +99,7 @@ public class ESFactory implements IESFactory {
         if (model.getClass().isAnnotationPresent(ESTable.class)) {
             esTable = model.getClass().getAnnotation(ESTable.class);
         }
+        assert esTable != null;
         return CheckAssert.check(esTable, "当前保存的对象不是ES对象");
     }
 

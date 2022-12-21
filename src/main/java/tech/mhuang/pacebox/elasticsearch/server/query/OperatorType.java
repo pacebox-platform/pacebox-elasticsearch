@@ -56,7 +56,7 @@ public enum OperatorType {
      */
     REGEX("{0} regex {1}");
 
-    private String message;
+    private final String message;
 
     OperatorType(String message) {
         this.message = message;

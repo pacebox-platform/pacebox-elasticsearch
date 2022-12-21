@@ -25,11 +25,11 @@ public class DefaultESQuery extends AbstractESQuery {
         return new DefaultEsQueryResult(queryContext, client);
     }
 
-    class DefaultEsQueryResult extends AbstractESQueryAware {
+    static class DefaultEsQueryResult extends AbstractESQueryAware {
 
-        private QueryContext queryContext = null;
+        private final QueryContext queryContext;
 
-        private ElasticsearchClient client = null;
+        private final ElasticsearchClient client;
 
         DefaultEsQueryResult(QueryContext queryContext, ElasticsearchClient client) {
             this.queryContext = queryContext;

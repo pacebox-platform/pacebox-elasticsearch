@@ -29,14 +29,14 @@ public class ESFramework {
     /**
      * elasticsearch配置信息
      */
-    private ESInfo info;
+    private final ESInfo info;
 
     /**
      * elasticsearch external
      */
     private IESExternal external;
 
-    private Map<String, IESFactory> factory = new ConcurrentHashMap<>();
+    private final Map<String, IESFactory> factory = new ConcurrentHashMap<>();
 
     /**
      * 获取容器

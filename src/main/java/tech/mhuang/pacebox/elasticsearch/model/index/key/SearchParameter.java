@@ -9,9 +9,9 @@ public class SearchParameter {
     /**
      * 可选值
      */
-    public static enum Values {
+    public enum Values {
         IkMaxWord("ik_max_word"), IkSmart("ik_smart"), Standard("standard");
-        private String value;
+        private final String value;
 
         Values(String value) {
             this.value = value;

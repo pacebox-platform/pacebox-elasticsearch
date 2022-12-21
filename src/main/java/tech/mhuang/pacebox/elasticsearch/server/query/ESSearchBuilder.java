@@ -11,7 +11,7 @@ import tech.mhuang.pacebox.elasticsearch.model.query.ESOrder;
 public class ESSearchBuilder {
 
 
-    private QueryContext queryContext = new QueryContext();
+    private final QueryContext queryContext = new QueryContext();
 
     /**
      * 新增查询条件
@@ -33,7 +33,7 @@ public class ESSearchBuilder {
      * @return
      */
     public ESSearchBuilder and() {
-        this.addContext(null, null, QueryQuota.AND, new Object[]{});
+        this.addContext(null, null, QueryQuota.AND);
         return this;
     }
 
@@ -60,7 +60,7 @@ public class ESSearchBuilder {
      * @return
      */
     public ESSearchBuilder or() {
-        this.addContext(null, null, QueryQuota.OR, new Object[]{});
+        this.addContext(null, null, QueryQuota.OR);
         return this;
     }
 
@@ -70,7 +70,7 @@ public class ESSearchBuilder {
      * @return
      */
     public ESSearchBuilder startInnerCondition() {
-        this.addContext(null, null, QueryQuota.LT, new Object[]{});
+        this.addContext(null, null, QueryQuota.LT);
         return this;
     }
 
@@ -80,7 +80,7 @@ public class ESSearchBuilder {
      * @return
      */
     public ESSearchBuilder endInnerCondition() {
-        this.addContext(null, null, QueryQuota.GT, null);
+        this.addContext(null, null, QueryQuota.GT, (Object) null);
         return this;
     }
 

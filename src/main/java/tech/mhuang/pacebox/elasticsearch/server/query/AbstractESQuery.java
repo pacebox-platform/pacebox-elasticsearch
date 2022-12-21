@@ -10,12 +10,12 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
  */
 public abstract class AbstractESQuery {
 
-    protected ElasticsearchClient client;
+    protected final ElasticsearchClient client;
 
     /**
      * 包装RestHighLevelClient
      *
-     * @param client
+     * @param client client
      */
     public AbstractESQuery(ElasticsearchClient client) {
         this.client = client;
@@ -25,7 +25,7 @@ public abstract class AbstractESQuery {
      * 查询抽象
      *
      * @param queryContext 查询全文
-     * @return
+     * @return 查询
      */
     public abstract ESQueryAware query(QueryContext queryContext);
 }

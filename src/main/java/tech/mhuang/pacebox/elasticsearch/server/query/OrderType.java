@@ -7,5 +7,5 @@ package tech.mhuang.pacebox.elasticsearch.server.query;
  * @since 1.0.0
  */
 public enum OrderType {
-    ASC, DESC;
+    ASC, DESC
 }

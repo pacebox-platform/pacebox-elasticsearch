@@ -13,7 +13,7 @@ public class TypeParameter {
         Text("text"), Keyword("keyword"), Long("long"), Integer("integer"), Short("short"), Byte("byte"), Double("double"),
         Float("float"), HalfFloat("half_float"), ScaledFloat("scaled_float"), Date("date"), Bollean("boolean"), Binary("binary"), IntegerRange("integer_range"), FloatRange("float_range"), LongRange("long_range"), DoubleRange("double_range"),
         DateRange("date_range"), Object("object"), Nested("nested"), Ip("ip");
-        private String value;
+        private final String value;
 
         Values(String value) {
             this.value = value;
