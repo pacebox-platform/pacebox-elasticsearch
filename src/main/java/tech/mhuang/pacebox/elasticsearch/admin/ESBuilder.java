@@ -39,16 +39,6 @@ public class ESBuilder {
             return this;
         }
 
-        /**
-         * 连接方式(http or https)
-         *
-         * @param scheme 连接方式
-         * @return this
-         */
-        public ProducerBuilder scheme(String scheme) {
-            this.info.setScheme(scheme);
-            return this;
-        }
 
         /**
          * 设置es的ip或者是对应name
@@ -56,19 +46,8 @@ public class ESBuilder {
          * @param ipPort ipPort
          * @return this
          */
-        public ProducerBuilder ipPort(String ipPort) {
-            this.info.setIpPort(ipPort);
-            return this;
-        }
-
-        /**
-         * 设置es访问的端口 默认9200
-         *
-         * @param port 端口
-         * @return this
-         */
-        public ProducerBuilder port(Integer port) {
-            this.info.setPort(port);
+        public ProducerBuilder url(String ipPort) {
+            this.info.setUrl(ipPort);
             return this;
         }
 

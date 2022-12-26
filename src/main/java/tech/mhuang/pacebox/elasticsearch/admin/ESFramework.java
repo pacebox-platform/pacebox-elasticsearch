@@ -89,21 +89,12 @@ public class ESFramework {
      * 装载配置
      */
     private ElasticsearchClient loadProperties(ESInfo.ESBean bean) {
-        String ipPort = bean.getIpPort();
-        List<HttpHost> hostList = Arrays.stream(StringUtil.split(ipPort,",")).map(hostPort -> {
-            String[] hostPortArr = hostPort.split(":");
-            return new HttpHost(hostPortArr[0], Integer.parseInt(hostPortArr[1]));
-        }).collect(Collectors.toList());
+        String urls = bean.getUrl();
+        List<HttpHost> hostList = Arrays.stream(StringUtil.split(urls,",")).map(url -> HttpHost.create(url)).collect(Collectors.toList());
         RestClientBuilder restClient = RestClient.builder(hostList.toArray(new HttpHost[hostList.size()]));
         setterClientConfig(restClient, bean);
         ElasticsearchTransport transport = new RestClientTransport(restClient.build(), new JacksonJsonpMapper());
         return new ElasticsearchClient(transport);
-    }
-
-    public static void main(String[] args) {
-        ESInfo.ESBean esBean = new ESInfo.ESBean();
-        ESInfo esInfo = new ESInfo();
-        new ESFramework(esInfo).loadProperties(esBean);
     }
 
     /**
