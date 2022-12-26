@@ -53,11 +53,11 @@ public class ESBuilder {
         /**
          * 设置es的ip或者是对应name
          *
-         * @param ip ip 或者服务器名
+         * @param ipPort ipPort
          * @return this
          */
-        public ProducerBuilder ip(String ip) {
-            this.info.setIp(ip);
+        public ProducerBuilder ipPort(String ipPort) {
+            this.info.setIpPort(ipPort);
             return this;
         }
 

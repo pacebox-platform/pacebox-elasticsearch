@@ -100,6 +100,12 @@ public class ESFramework {
         return new ElasticsearchClient(transport);
     }
 
+    public static void main(String[] args) {
+        ESInfo.ESBean esBean = new ESInfo.ESBean();
+        ESInfo esInfo = new ESInfo();
+        new ESFramework(esInfo).loadProperties(esBean);
+    }
+
     /**
      * 设置客户端配置
      */
