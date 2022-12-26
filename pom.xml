@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.mhuang.pacebox</groupId>
     <artifactId>pacebox-elasticsearch</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <name>elasticsearch tool</name>
     <url>https://gitee.com/pacebox/pacebox-elasticsearch.git</url>
     <description>elasticsearch plugin</description>

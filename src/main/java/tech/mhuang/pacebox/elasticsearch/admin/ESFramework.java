@@ -10,12 +10,16 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+import tech.mhuang.pacebox.core.util.StringUtil;
 import tech.mhuang.pacebox.elasticsearch.admin.bean.ESInfo;
 import tech.mhuang.pacebox.elasticsearch.admin.external.IESExternal;
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * es平台实现
@@ -85,7 +89,9 @@ public class ESFramework {
      * 装载配置
      */
     private ElasticsearchClient loadProperties(ESInfo.ESBean bean) {
-        RestClientBuilder restClient = RestClient.builder(new HttpHost(bean.getIp(), bean.getPort()));
+        String urls = bean.getUrl();
+        List<HttpHost> hostList = Arrays.stream(StringUtil.split(urls,",")).map(url -> HttpHost.create(url)).collect(Collectors.toList());
+        RestClientBuilder restClient = RestClient.builder(hostList.toArray(new HttpHost[hostList.size()]));
         setterClientConfig(restClient, bean);
         ElasticsearchTransport transport = new RestClientTransport(restClient.build(), new JacksonJsonpMapper());
         return new ElasticsearchClient(transport);
