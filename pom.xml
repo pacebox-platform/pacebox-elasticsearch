@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.mhuang.pacebox</groupId>
     <artifactId>pacebox-elasticsearch</artifactId>
-    <version>1.0.7-jdk17</version>
+    <version>1.0.8-jdk17</version>
     <name>elasticsearch tool</name>
     <url>https://gitee.com/pacebox/pacebox-elasticsearch.git</url>
     <description>elasticsearch plugin</description>
@@ -30,17 +30,6 @@
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
             <version>${es.client.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jakarta.json-api</artifactId>
-                    <groupId>jakarta.json</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.json</groupId>
-            <artifactId>jakarta.json-api</artifactId>
-            <version>${jakarta.json.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
