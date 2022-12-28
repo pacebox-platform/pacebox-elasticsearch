@@ -30,16 +30,8 @@ public class ESInfo {
         /**
          * 方式(http or https) 默认http
          */
-        private String scheme = "http";
-        /**
-         * 设置es的ip或者是对应name 默认127.0.0.1本地
-         */
-        private String ip = "127.0.0.1";
+        private String url = "http://127.0.0.1:9200";
 
-        /**
-         * 端口 默认9200
-         */
-        private Integer port = 9200;
 
         /**
          * 客户端连接数、默认20

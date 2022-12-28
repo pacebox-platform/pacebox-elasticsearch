@@ -42,35 +42,14 @@ public class ESBuilder {
         /**
          * 连接方式(http or https)
          *
-         * @param scheme 连接方式
+         * @param url 连接方式
          * @return this
          */
-        public ProducerBuilder scheme(String scheme) {
-            this.info.setScheme(scheme);
+        public ProducerBuilder url(String url) {
+            this.info.setUrl(url);
             return this;
         }
 
-        /**
-         * 设置es的ip或者是对应name
-         *
-         * @param ip ip 或者服务器名
-         * @return this
-         */
-        public ProducerBuilder ip(String ip) {
-            this.info.setIp(ip);
-            return this;
-        }
-
-        /**
-         * 设置es访问的端口 默认9200
-         *
-         * @param port 端口
-         * @return this
-         */
-        public ProducerBuilder port(Integer port) {
-            this.info.setPort(port);
-            return this;
-        }
 
         /**
          * 设置客户端连接数 默认20

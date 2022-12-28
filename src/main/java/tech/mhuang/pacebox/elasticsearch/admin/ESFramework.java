@@ -7,12 +7,16 @@ import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import tech.mhuang.pacebox.core.util.StringUtil;
 import tech.mhuang.pacebox.elasticsearch.admin.bean.ESInfo;
 import tech.mhuang.pacebox.elasticsearch.admin.external.IESExternal;
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * es平台实现
@@ -82,8 +86,9 @@ public class ESFramework {
      * 装载配置
      */
     private RestHighLevelClient loadProperties(ESInfo.ESBean bean) {
-        HttpHost httpHost = new HttpHost(bean.getIp(), bean.getPort(), bean.getScheme());
-        RestClientBuilder builder = RestClient.builder(httpHost);
+        String urls = bean.getUrl();
+        List<HttpHost> hostList = Arrays.stream(StringUtil.split(urls,",")).map(url -> HttpHost.create(url)).collect(Collectors.toList());
+        RestClientBuilder builder = RestClient.builder(hostList.toArray(new HttpHost[hostList.size()]));
         setterClientConfig(builder, bean);
         return new RestHighLevelClient(builder);
     }
