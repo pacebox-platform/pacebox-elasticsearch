@@ -89,7 +89,9 @@ public class ESFactory implements IESFactory {
         logger.debug("放入得ES数据为{}", data);
         JSONObject jsonObject = JSON.parseObject(data);
         IndexRequest indexRequest = IndexRequest.of(i -> i.index(index).document(jsonObject));
+        //此处判断是否有埋点，有的话则进行埋点处理
         IndexResponse response = client.index(indexRequest);
+        //此处判断是否有埋点,有的话则埋点处理
         logger.debug("===放入ES数据完毕=====,response:{}", response);
         return response;
     }
@@ -148,7 +150,6 @@ public class ESFactory implements IESFactory {
         logger.debug("===正在修改ES数据=====");
         logger.debug("修改ES数据为{}，id为:{}", data, id);
         JSONObject jsonObject = JSON.parseObject(data);
-
         UpdateRequest updateRequest = UpdateRequest.of(u -> u.index(index).id(id).doc(jsonObject));
         UpdateResponse response = client.update(updateRequest, JSONObject.class);
         logger.debug("打印应答的数据是:{}", response);
