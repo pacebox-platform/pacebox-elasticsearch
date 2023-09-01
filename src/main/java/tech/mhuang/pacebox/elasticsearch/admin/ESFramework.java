@@ -18,6 +18,7 @@ import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -90,8 +91,8 @@ public class ESFramework {
      */
     private ElasticsearchClient loadProperties(ESInfo.ESBean bean) {
         String urls = bean.getUrl();
-        List<HttpHost> hostList = Arrays.stream(StringUtil.split(urls,",")).map(url -> HttpHost.create(url)).collect(Collectors.toList());
-        RestClientBuilder restClient = RestClient.builder(hostList.toArray(new HttpHost[hostList.size()]));
+        List<HttpHost> hostList = Arrays.stream(Objects.requireNonNull(StringUtil.split(urls, ","))).map(HttpHost::create).toList();
+        RestClientBuilder restClient = RestClient.builder(hostList.toArray(new HttpHost[0]));
         setterClientConfig(restClient, bean);
         ElasticsearchTransport transport = new RestClientTransport(restClient.build(), new JacksonJsonpMapper());
         return new ElasticsearchClient(transport);

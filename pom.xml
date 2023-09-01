@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.mhuang.pacebox</groupId>
     <artifactId>pacebox-elasticsearch</artifactId>
-    <version>1.0.12-jdk17</version>
+    <version>1.0.13-jdk17</version>
     <name>elasticsearch tool</name>
     <url>https://gitee.com/pacebox/pacebox-elasticsearch.git</url>
     <description>elasticsearch plugin</description>
@@ -11,13 +11,13 @@
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
-        <lombok.version>1.18.26</lombok.version>
-        <fastjson.version>2.0.31</fastjson.version>
-        <es.client.version>8.7.1</es.client.version>
+        <lombok.version>1.18.28</lombok.version>
+        <fastjson.version>2.0.38</fastjson.version>
+        <es.client.version>8.9.0</es.client.version>
         <jackson.version>2.14.2</jackson.version>
         <log4j-to-slf4j.version>2.20.0</log4j-to-slf4j.version>
         <slf4j.version>2.0.7</slf4j.version>
-        <pacebox.core.version>1.1.9-jdk17</pacebox.core.version>
+        <pacebox.core.version>1.1.10-jdk17</pacebox.core.version>
     </properties>
     <dependencies>
         <dependency>
@@ -96,7 +96,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -105,7 +105,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -136,7 +136,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>3.3.0</version>
                         <executions>
                             <execution>
                                 <id>oss</id>
@@ -151,7 +151,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>oss</id>
