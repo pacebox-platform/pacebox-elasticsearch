@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import tech.mhuang.pacebox.elasticsearch.server.query.AbstractESQuery;
 import tech.mhuang.pacebox.elasticsearch.server.query.ESSearchBuilder;
+import tech.mhuang.pacebox.json.BaseJsonService;
 
 import java.io.IOException;
 
@@ -22,6 +23,8 @@ public interface IESFactory {
 
     void setClient(ElasticsearchClient client);
 
+
+    void setJsonConvert(BaseJsonService jsonConvert);
     /**
      * 获取构造器
      *
@@ -101,7 +104,7 @@ public interface IESFactory {
      *
      * @param index 索引
      * @return AcknowledgedResponse
-     * @throws IOException
+     * @throws IOException IO异常
      */
     AcknowledgedResponse delete(String index) throws IOException;
 
@@ -111,7 +114,7 @@ public interface IESFactory {
      * @param index 删除的索引
      * @param id    删除的id
      * @return DeleteResponse
-     * @throws IOException
+     * @throws IOException IO异常
      */
     DeleteResponse delete(String index, String id) throws IOException;
 

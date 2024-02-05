@@ -3,21 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.mhuang.pacebox</groupId>
     <artifactId>pacebox-elasticsearch</artifactId>
-    <version>1.0.13-jdk17</version>
+    <version>1.0.13-jdk21</version>
     <name>elasticsearch tool</name>
     <url>https://gitee.com/pacebox/pacebox-elasticsearch.git</url>
     <description>elasticsearch plugin</description>
     <properties>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
-        <lombok.version>1.18.28</lombok.version>
-        <fastjson.version>2.0.38</fastjson.version>
-        <es.client.version>8.9.0</es.client.version>
-        <jackson.version>2.14.2</jackson.version>
-        <log4j-to-slf4j.version>2.20.0</log4j-to-slf4j.version>
-        <slf4j.version>2.0.7</slf4j.version>
-        <pacebox.core.version>1.1.10-jdk17</pacebox.core.version>
+        <java.version>21</java.version>
+        <lombok.version>1.18.30</lombok.version>
+        <es.client.version>8.12.0</es.client.version>
+        <jackson.version>2.16.0</jackson.version>
+        <log4j-to-slf4j.version>2.22.1</log4j-to-slf4j.version>
+        <slf4j.version>2.0.11</slf4j.version>
+        <pacebox.core.version>1.1.10-jdk21</pacebox.core.version>
+        <pacebox.jackson.version>1.0.0-jdk21</pacebox.jackson.version>
     </properties>
     <dependencies>
         <dependency>
@@ -31,19 +31,9 @@
             <version>${es.client.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>${fastjson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -61,7 +51,11 @@
             <groupId>org.slf4j</groupId>
             <version>${slf4j.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>tech.mhuang.pacebox</groupId>
+            <artifactId>pacebox-json-jackson</artifactId>
+            <version>${pacebox.jackson.version}</version>
+        </dependency>
     </dependencies>
     <licenses>
         <license>

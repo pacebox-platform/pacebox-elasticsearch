@@ -9,18 +9,19 @@ import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.UpdateRequest;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.mhuang.pacebox.core.annotation.AnnotationUtil;
 import tech.mhuang.pacebox.core.check.CheckAssert;
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
 import tech.mhuang.pacebox.elasticsearch.server.annoation.ESTable;
 import tech.mhuang.pacebox.elasticsearch.server.query.AbstractESQuery;
 import tech.mhuang.pacebox.elasticsearch.server.query.DefaultESQuery;
 import tech.mhuang.pacebox.elasticsearch.server.query.ESSearchBuilder;
+import tech.mhuang.pacebox.json.BaseJsonService;
 
 import java.io.IOException;
+import java.util.Map;
 
 
 /**
@@ -31,20 +32,23 @@ import java.io.IOException;
  */
 public class ESFactory implements IESFactory {
 
-    private String name;
-
     private ElasticsearchClient client;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private BaseJsonService jsonConverter;
     @Override
     public void setName(String name) {
-        this.name = name;
     }
 
     @Override
     public void setClient(ElasticsearchClient client) {
         this.client = client;
+    }
+
+    @Override
+    public void setJsonConvert(BaseJsonService jsonConvert) {
+        jsonConverter = jsonConvert;
     }
 
     @Override
@@ -81,14 +85,13 @@ public class ESFactory implements IESFactory {
     }
 
     private <T> String packEntity(T t) {
-        return JSON.toJSONString(t);
+        return jsonConverter.toString(t);
     }
 
     private IndexResponse baseInsert(String data, String index) throws IOException {
         logger.debug("===正在插入ES数据=====");
         logger.debug("放入得ES数据为{}", data);
-        JSONObject jsonObject = JSON.parseObject(data);
-        IndexRequest indexRequest = IndexRequest.of(i -> i.index(index).document(jsonObject));
+        IndexRequest<Object> indexRequest = IndexRequest.of(i -> i.index(index).document(jsonConverter.toMap(data)));
         //此处判断是否有埋点，有的话则进行埋点处理
         IndexResponse response = client.index(indexRequest);
         //此处判断是否有埋点,有的话则埋点处理
@@ -99,7 +102,7 @@ public class ESFactory implements IESFactory {
     private <T> ESTable checkESTable(T model) {
         ESTable esTable = null;
         if (model.getClass().isAnnotationPresent(ESTable.class)) {
-            esTable = model.getClass().getAnnotation(ESTable.class);
+            esTable = AnnotationUtil.getAnnotation(model,ESTable.class);
         }
         assert esTable != null;
         return CheckAssert.check(esTable, "当前保存的对象不是ES对象");
@@ -149,9 +152,8 @@ public class ESFactory implements IESFactory {
     private UpdateResponse baseUpdate(String data, String index, String id) throws IOException {
         logger.debug("===正在修改ES数据=====");
         logger.debug("修改ES数据为{}，id为:{}", data, id);
-        JSONObject jsonObject = JSON.parseObject(data);
-        UpdateRequest updateRequest = UpdateRequest.of(u -> u.index(index).id(id).doc(jsonObject));
-        UpdateResponse response = client.update(updateRequest, JSONObject.class);
+        UpdateRequest<Object, Object> updateRequest = UpdateRequest.of(u -> u.index(index).id(id).doc(jsonConverter.toMap(data)));
+        UpdateResponse response = client.update(updateRequest, Map.class);
         logger.debug("打印应答的数据是:{}", response);
         return response;
 

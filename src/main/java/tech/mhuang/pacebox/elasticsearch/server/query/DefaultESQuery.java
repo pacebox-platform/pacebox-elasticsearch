@@ -29,11 +29,8 @@ public class DefaultESQuery extends AbstractESQuery {
 
         private final QueryContext queryContext;
 
-        private final ElasticsearchClient client;
-
         DefaultEsQueryResult(QueryContext queryContext, ElasticsearchClient client) {
             this.queryContext = queryContext;
-            this.client = client;
         }
 
         @Override
@@ -50,7 +47,7 @@ public class DefaultESQuery extends AbstractESQuery {
         public <T> T get(Class<T> clz) {
             this.queryContext.size(1);
             List<T> results = this.list(clz);
-            return results.size() == 0 ? null : results.get(0);
+            return results.isEmpty() ? null : results.getFirst();
         }
     }
 }
