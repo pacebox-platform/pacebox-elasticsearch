@@ -2,7 +2,7 @@ package tech.mhuang.pacebox.elasticsearch.admin.external;
 
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
 import tech.mhuang.pacebox.elasticsearch.server.ESFactory;
-import tech.mhuang.pacebox.json.jackson.JacksonJsonService;
+import tech.mhuang.pacebox.json.DefaultJsonService;
 
 /**
  * es扩展
@@ -20,7 +20,7 @@ public interface IESExternal {
      */
     default IESFactory create(String key) {
         IESFactory factory = new ESFactory();
-        factory.setJsonConvert(new JacksonJsonService());
+        factory.setJsonConvert(new DefaultJsonService());
         return factory;
     }
 }

@@ -16,8 +16,8 @@ public class ESSearchBuilder {
     /**
      * 新增查询条件
      *
-     * @param field 字段
-     * @param type 类型
+     * @param field  字段
+     * @param type   类型
      * @param values 值
      * @return 构建器
      */
@@ -40,10 +40,10 @@ public class ESSearchBuilder {
     /**
      * 添加查询上下文
      *
-     * @param field 字段
-     * @param type 类型
+     * @param field      字段
+     * @param type       类型
      * @param queryQuota 查询方式
-     * @param values 值
+     * @param values     值
      */
     private void addContext(String field, OperatorType type, QueryQuota queryQuota, Object... values) {
         OperatorContext context = new OperatorContext();
@@ -164,7 +164,7 @@ public class ESSearchBuilder {
     /**
      * 排序
      *
-     * @param field 字段
+     * @param field     字段
      * @param orderType 排序方式
      * @return 构建器
      */

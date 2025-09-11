@@ -2,6 +2,8 @@ package tech.mhuang.pacebox.elasticsearch.server.query;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.mhuang.pacebox.elasticsearch.model.query.ESPage;
 
 import java.util.Collections;
@@ -13,8 +15,9 @@ import java.util.List;
  * @author zhangxh
  * @since 1.0.0
  */
-@Slf4j
 public class DefaultESQuery extends AbstractESQuery {
+
+    private static final Logger log = LoggerFactory.getLogger(DefaultESQuery.class);
 
     public DefaultESQuery(ElasticsearchClient client) {
         super(client);
@@ -28,9 +31,10 @@ public class DefaultESQuery extends AbstractESQuery {
     static class DefaultEsQueryResult extends AbstractESQueryAware {
 
         private final QueryContext queryContext;
-
+        private final ElasticsearchClient client;
         DefaultEsQueryResult(QueryContext queryContext, ElasticsearchClient client) {
             this.queryContext = queryContext;
+            this.client = client;
         }
 
         @Override

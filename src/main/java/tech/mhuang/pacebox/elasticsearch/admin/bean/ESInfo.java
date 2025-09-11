@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author mhuang
  * @since 1.0.0
  */
-@Data
 public class ESInfo {
 
     /**
@@ -19,7 +18,14 @@ public class ESInfo {
      */
     private Map<String, ESBean> beanMap = new ConcurrentHashMap<>();
 
-    @Data
+    public Map<String, ESBean> getBeanMap() {
+        return beanMap;
+    }
+
+    public void setBeanMap(Map<String, ESBean> beanMap) {
+        this.beanMap = beanMap;
+    }
+
     public static class ESBean {
 
         /**
@@ -55,5 +61,61 @@ public class ESInfo {
          * socket超时时间 默认40秒
          */
         private Integer socketTimeout = 40000;
+
+        public boolean isEnable() {
+            return enable;
+        }
+
+        public void setEnable(boolean enable) {
+            this.enable = enable;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public Integer getConnectNum() {
+            return connectNum;
+        }
+
+        public void setConnectNum(Integer connectNum) {
+            this.connectNum = connectNum;
+        }
+
+        public Integer getConnectPerRoute() {
+            return connectPerRoute;
+        }
+
+        public void setConnectPerRoute(Integer connectPerRoute) {
+            this.connectPerRoute = connectPerRoute;
+        }
+
+        public Integer getConnectionTimeout() {
+            return connectionTimeout;
+        }
+
+        public void setConnectionTimeout(Integer connectionTimeout) {
+            this.connectionTimeout = connectionTimeout;
+        }
+
+        public Integer getConnectionRequestTimeout() {
+            return connectionRequestTimeout;
+        }
+
+        public void setConnectionRequestTimeout(Integer connectionRequestTimeout) {
+            this.connectionRequestTimeout = connectionRequestTimeout;
+        }
+
+        public Integer getSocketTimeout() {
+            return socketTimeout;
+        }
+
+        public void setSocketTimeout(Integer socketTimeout) {
+            this.socketTimeout = socketTimeout;
+        }
     }
 }

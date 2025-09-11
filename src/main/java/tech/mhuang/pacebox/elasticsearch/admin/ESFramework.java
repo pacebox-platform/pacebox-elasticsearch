@@ -2,19 +2,17 @@ package tech.mhuang.pacebox.elasticsearch.admin;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHost;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
+import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.mhuang.pacebox.core.util.StringUtil;
 import tech.mhuang.pacebox.elasticsearch.admin.bean.ESInfo;
 import tech.mhuang.pacebox.elasticsearch.admin.external.IESExternal;
 import tech.mhuang.pacebox.elasticsearch.admin.factory.IESFactory;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author mhuang
  * @since 1.0.0
  */
-@Slf4j
 public class ESFramework {
-
+    private static final Logger log = LoggerFactory.getLogger(ESFramework.class);
     /**
      * elasticsearch配置信息
      */
@@ -90,27 +87,9 @@ public class ESFramework {
      */
     private ElasticsearchClient loadProperties(ESInfo.ESBean bean) {
         String urls = bean.getUrl();
-        List<HttpHost> hostList = Arrays.stream(Objects.requireNonNull(StringUtil.split(urls, ","))).map(HttpHost::create).toList();
-        RestClientBuilder restClient = RestClient.builder(hostList.toArray(new HttpHost[0]));
-        setterClientConfig(restClient, bean);
-        ElasticsearchTransport transport = new RestClientTransport(restClient.build(), new JacksonJsonpMapper());
+        List<URI> hostList = Arrays.stream(Objects.requireNonNull(StringUtil.split(urls, ","))).map(URI::create).toList();
+        Rest5ClientBuilder restClient = Rest5Client.builder(hostList);
+        Rest5ClientTransport transport = new Rest5ClientTransport(restClient.build(), new JacksonJsonpMapper());
         return new ElasticsearchClient(transport);
-    }
-
-    /**
-     * 设置客户端配置
-     */
-    private void setterClientConfig(RestClientBuilder builder, ESInfo.ESBean bean) {
-        builder.setRequestConfigCallback((RequestConfig.Builder requestConfigBuilder) -> {
-            requestConfigBuilder.setConnectTimeout(bean.getConnectionTimeout());
-            requestConfigBuilder.setSocketTimeout(bean.getSocketTimeout());
-            requestConfigBuilder.setConnectionRequestTimeout(bean.getConnectionRequestTimeout());
-            return requestConfigBuilder;
-        });
-        builder.setHttpClientConfigCallback((HttpAsyncClientBuilder httpClientBuilder) -> {
-            httpClientBuilder.setMaxConnTotal(bean.getConnectNum());
-            httpClientBuilder.setMaxConnPerRoute(bean.getConnectPerRoute());
-            return httpClientBuilder;
-        });
     }
 }
