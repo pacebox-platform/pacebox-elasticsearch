@@ -1,7 +1,5 @@
 package tech.mhuang.pacebox.elasticsearch.model.index;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +9,6 @@ import java.util.Map;
  * @author zhangxh
  * @since 1.0.0
  */
-@Data
 public class IndexParameter {
 
     private Map<String, String> parameters = new HashMap<>();
@@ -47,5 +44,13 @@ public class IndexParameter {
     public IndexParameter removeKey(String key) {
         parameters.remove(key);
         return this;
+    }
+
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, String> parameters) {
+        this.parameters = parameters;
     }
 }

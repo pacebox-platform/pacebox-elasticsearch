@@ -1,7 +1,6 @@
 package tech.mhuang.pacebox.elasticsearch.server.query;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.mhuang.pacebox.elasticsearch.model.query.ESPage;
@@ -32,6 +31,7 @@ public class DefaultESQuery extends AbstractESQuery {
 
         private final QueryContext queryContext;
         private final ElasticsearchClient client;
+
         DefaultEsQueryResult(QueryContext queryContext, ElasticsearchClient client) {
             this.queryContext = queryContext;
             this.client = client;

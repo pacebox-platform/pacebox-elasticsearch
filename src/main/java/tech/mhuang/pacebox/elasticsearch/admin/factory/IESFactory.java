@@ -25,6 +25,7 @@ public interface IESFactory {
 
 
     void setJsonConvert(BaseJsonService jsonConvert);
+
     /**
      * 获取构造器
      *

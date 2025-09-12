@@ -1,6 +1,7 @@
 package tech.mhuang.pacebox.elasticsearch.server.query;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 
@@ -10,9 +11,10 @@ import java.text.MessageFormat;
  * @author zhangxh
  * @since 1.0.0
  */
-@Slf4j
 public abstract class AbstractESQueryAware implements ESQueryAware {
 
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractESQueryAware.class);
 
     protected void checkValue(int length, OperatorContext context) {
         if (context.getValues().length < length) {

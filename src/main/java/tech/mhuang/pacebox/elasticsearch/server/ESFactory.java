@@ -37,6 +37,7 @@ public class ESFactory implements IESFactory {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private BaseJsonService jsonConverter;
+
     @Override
     public void setName(String name) {
     }
@@ -102,7 +103,7 @@ public class ESFactory implements IESFactory {
     private <T> ESTable checkESTable(T model) {
         ESTable esTable = null;
         if (model.getClass().isAnnotationPresent(ESTable.class)) {
-            esTable = AnnotationUtil.getAnnotation(model,ESTable.class);
+            esTable = AnnotationUtil.getAnnotation(model, ESTable.class);
         }
         assert esTable != null;
         return CheckAssert.check(esTable, "当前保存的对象不是ES对象");

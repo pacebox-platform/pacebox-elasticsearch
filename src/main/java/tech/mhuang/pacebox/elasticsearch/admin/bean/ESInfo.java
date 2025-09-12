@@ -1,7 +1,5 @@
 package tech.mhuang.pacebox.elasticsearch.admin.bean;
 
-import lombok.Data;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
